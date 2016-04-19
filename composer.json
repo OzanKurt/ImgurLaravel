@@ -1,7 +1,14 @@
 {
-    "name": "ozankurt/laravel-imgur",
+    "name": "ozankurt/imgur-laravel",
     "description": "A wrap-up package to make works easier with imgur.",
-    "keywords": ["laravel", "imgur", "api", "wrapper"],
+    "keywords": ["imgur", "laravel", "api", "wrapper"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ozan Kurt",
+            "email": "ozankurt2@gmail.com"
+        }
+    ],
     "require": {
         "adyg/php-imgur-api-client": "^1.0",
         "intervention/image": "^2.3"
@@ -9,12 +16,5 @@
     "require-dev": {
         "phpunit/phpunit": "^5.3"
     },
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Ozan Kurt",
-            "email": "me@ozankurt.com"
-        }
-    ],
     "minimum-stability": "stable"
 }

@@ -23,11 +23,13 @@ class ImgurServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $imgur = new Imgur([
-            $this->app->config['client_id'], 
-            $this->app->config['client_secret'],
-        ]);
+        $config = $this->app->config;
 
-        $this->app->instance(Imgur::class, $imgur);
+        $this->app->singleton(Imgur::class, function() use ($config) {
+            return new Imgur([
+                $config['client_id'], 
+                $config['client_secret'],
+            ]);
+        });
     }
 }
