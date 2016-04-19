@@ -27,8 +27,8 @@ class ImgurServiceProvider extends ServiceProvider
 
         $this->app->singleton(Imgur::class, function() use ($config) {
             return new Imgur([
-                $config['client_id'], 
-                $config['client_secret'],
+                $config->get('services.imgur.client_id'), 
+                $config->get('services.imgur.client_secret'),
             ]);
         });
     }
