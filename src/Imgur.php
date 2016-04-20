@@ -3,8 +3,7 @@
 namespace Kurt\Imgur;
 
 use Imgur\Client;
-use Intervention\Image\ImageManager;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Kurt\Imgur\Exceptions\NonexistentApiException;
 
 class Imgur {
 
@@ -65,7 +64,7 @@ class Imgur {
             return call_user_func_array([$this->client, 'api'], [$api]);
         }
 
-        throw new \Exception("Api `{$api}` doesn't exist.");
+        throw new NonexistentApiException($api);
     }
 
     /**
@@ -76,10 +75,10 @@ class Imgur {
      */
     public function __call($method, $args)
     {
-        $result = preg_match('^get[A-Z][a-z]+Api$', $method);
-
-        if (!empty($result)) {
+        if (preg_match('/^get([A-Z][a-z]+)Api$/', $method, $result)) {
             return $this->getApi($result[1]);
         }
+
+        throw new \Exception("Nonexistent method `{$method}` called.");
     }
 }

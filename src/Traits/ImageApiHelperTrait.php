@@ -2,29 +2,30 @@
 
 namespace Kurt\Imgur;
 
+use Imgur\Api\Model\Image;
+use Illuminate\Http\UploadedFile;
+use Intervention\Image\ImageManager;
+use Kurt\Imgur\Exceptions\UploadFailedException;
+
 trait ImageApiHelperTrait {
 
     /**
      * Upload a file from the request.
      * 
-     * @param  UploadedFile $uploadedFile
-     * @param  array        $data
+     * @param  \Illuminate\Http\UploadedFile    $uploadedFile
+     * @param  array                            $data
      * 
      * @return \Imgur\Api\Model\Image
      */
     public function upload(UploadedFile $uploadedFile, array $data = [])
     {
-        $imageApi = $this->client->api('image');
+        $image = app(ImageManager::class)->make($uploadedFile);
 
-        $imageMagager = app(ImageManager::class);
-
-        $image = $imageMagager->make($uploadedFile);
-
-        $extension = $uploadedFile->getClientOriginalExtension();
+        $extension = $uploadedFile->extension();
 
         $imageEncoded = $image->encode($extension)->getEncoded();
 
-        $response = $imageApi->upload([
+        $response = $this->getImageApi()->upload([
             'image' => $imageEncoded,
             'type' => $extension,
         ] + $data);
@@ -42,9 +43,7 @@ trait ImageApiHelperTrait {
      */
     public function uploadFromUrl($url, array $data = [])
     {
-        $imageApi = $this->client->api('image');
-
-        $response = $imageApi->upload([
+        $response = $this->getImageApi()->upload([
             'image' => $url,
             'type' => 'url',
         ] + $data);
@@ -62,10 +61,10 @@ trait ImageApiHelperTrait {
     private function handleUploadResponse($response)
     {
         if (!$response->getSuccess()) {
-            throw new \Exception("Upload failed");
+            throw new UploadFailedException;
         }
 
-        $imageModel = new \Imgur\Api\Model\Image($response->getData());
+        $imageModel = new Image($response->getData());
         
         return $imageModel;
     }
