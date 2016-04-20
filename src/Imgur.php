@@ -5,6 +5,13 @@ namespace Kurt\Imgur;
 use Imgur\Client;
 use Kurt\Imgur\Exceptions\NonexistentApiException;
 
+/**
+ * Contains the functional to ease the usage of `\Imgur\Client`.
+ *
+ * @author Ozan Kurt <ozankurt2@gmail.com>
+ * @package ozankurt/imgur-laravel
+ * @version 1.0.0
+ */
 class Imgur {
 
     use ImageApiHelperTrait;
@@ -17,15 +24,15 @@ class Imgur {
 
     /**
      * List of available api's for magic calls.
-     * @var string[]
+     * @var string[] Imgur api names.
      */
     private $availableApis = ['account', 'image', 'album', 'comment', 'conversation', 'gallery', 'image', 'memegen', 'notification'];
 
     /**
      * Imgur constructor.
      * 
-     * @param string $client_id
-     * @param string $client_secret
+     * @param string $client_id     Client id of the imgur application.
+     * @param string $client_secret Client secret of the imgur application.
      */
     function __construct($client_id, $client_secret = null)
     {
@@ -52,9 +59,11 @@ class Imgur {
     /**
      * Access an api from the client.
      * 
-     * @param  string $api
+     * @param  string $api Name of the requested api.
      * 
      * @return \Imgur\Api\AbstractApi
+     *
+     * @throws \Kurt\Imgur\Exceptions\NonexistentApiException Throws an exception if the requested api does not exist.
      */
     public function getApi($api)
     {
@@ -68,10 +77,15 @@ class Imgur {
     }
 
     /**
-     * Forward some calls to the image api itself.
+     * Magic calls to access any existent api fluently.
+     *
+     * Example: <br>
+     *     `$this->getImageApi();`
      * 
-     * @param  string $method
-     * @param  array  $args
+     * @param  string $method   Called method name.
+     * @param  array  $args     Arguments of the method.
+     *
+     * @throws \Exception Throws an exception if there is no method.
      */
     public function __call($method, $args)
     {

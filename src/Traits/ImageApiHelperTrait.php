@@ -7,13 +7,20 @@ use Illuminate\Http\UploadedFile;
 use Intervention\Image\ImageManager;
 use Kurt\Imgur\Exceptions\UploadFailedException;
 
+/**
+ * Contains the functional to ease the usage of `\Imgur\Api\Image`.
+ *
+ * @author Ozan Kurt <ozankurt2@gmail.com>
+ * @package ozankurt/imgur-laravel
+ * @version 1.0.0
+ */
 trait ImageApiHelperTrait {
 
     /**
-     * Upload a file from the request.
+     * Upload an image by using the file from request.
      * 
-     * @param  \Illuminate\Http\UploadedFile    $uploadedFile
-     * @param  array                            $data
+     * @param  \Illuminate\Http\UploadedFile    $uploadedFile   The uploaded file.
+     * @param  array                            $data           Extra data you might want to send imgur.
      * 
      * @return \Imgur\Api\Model\Image
      */
@@ -34,10 +41,10 @@ trait ImageApiHelperTrait {
     }
 
     /**
-     * Upload a file from a given URL.
+     * Upload an image by using the given URL.
      * 
-     * @param  string $url
-     * @param  array  $data
+     * @param  string $url      The image url.
+     * @param  array  $data     Extra data you might want to send imgur.
      * 
      * @return \Imgur\Api\Model\Image
      */
@@ -57,6 +64,8 @@ trait ImageApiHelperTrait {
      * @param  array $response
      * 
      * @return \Imgur\Api\Model\Image
+     *
+     * @throws \Kurt\Imgur\Exceptions\UploadFailedException Throws an exception if the upload fails.
      */
     private function handleUploadResponse($response)
     {

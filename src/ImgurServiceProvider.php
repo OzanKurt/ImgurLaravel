@@ -4,6 +4,13 @@ namespace Kurt\Imgur;
 
 use Illuminate\Support\ServiceProvider;
 
+/**
+ * Service provider for Laravel 5 integration.
+ *
+ * @author Ozan Kurt <ozankurt2@gmail.com>
+ * @package ozankurt/imgur-laravel
+ * @version 1.0.0
+ */
 class ImgurServiceProvider extends ServiceProvider
 {
     /**
