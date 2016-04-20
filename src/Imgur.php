@@ -17,7 +17,7 @@ class Imgur {
 
     /**
      * List of available api's for magic calls.
-     * @var [type]
+     * @var string[]
      */
     private $availableApis = ['account', 'image', 'album', 'comment', 'conversation', 'gallery', 'image', 'memegen', 'notification'];
 
