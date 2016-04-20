@@ -8,7 +8,19 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class Imgur {
 
+    use ImageApiHelperTrait;
+
+    /**
+     * Client instance.
+     * @var \Imgur\Client
+     */
     private $client;
+
+    /**
+     * List of available api's for magic calls.
+     * @var [type]
+     */
+    private $availableApis = ['account', 'image', 'album', 'comment', 'conversation', 'gallery', 'image', 'memegen', 'notification'];
 
     /**
      * Imgur constructor.
@@ -39,69 +51,21 @@ class Imgur {
     }
 
     /**
-     * Upload a file from the request.
+     * Access an api from the client.
      * 
-     * @param  UploadedFile $uploadedFile
-     * @param  array        $data
+     * @param  string $api
      * 
-     * @return \Imgur\Api\Model\Image
+     * @return \Imgur\Api\AbstractApi
      */
-    public function upload(UploadedFile $uploadedFile, array $data = [])
+    public function getApi($api)
     {
-        $imageApi = $this->client->api('image');
+        $api = strtolower($api);
 
-        $imageMagager = app(ImageManager::class);
-
-        $image = $imageMagager->make($uploadedFile);
-
-        $extension = $uploadedFile->getClientOriginalExtension();
-
-        $imageEncoded = $image->encode($extension)->getEncoded();
-
-        $response = $imageApi->upload([
-            'image' => $imageEncoded,
-            'type' => $extension,
-        ] + $data);
-
-        return $this->handleUploadResponse($response);
-    }
-
-    /**
-     * Upload a file from a given URL.
-     * 
-     * @param  string $url
-     * @param  array  $data
-     * 
-     * @return \Imgur\Api\Model\Image
-     */
-    public function uploadFromUrl($url, array $data = [])
-    {
-        $imageApi = $this->client->api('image');
-
-        $response = $imageApi->upload([
-            'image' => $url,
-            'type' => 'url',
-        ] + $data);
-
-        return $this->handleUploadResponse($response);
-    }
-
-    /**
-     * Handles the response from upload.
-     * 
-     * @param  array $response
-     * 
-     * @return \Imgur\Api\Model\Image
-     */
-    private function handleUploadResponse($response)
-    {
-        if (!$response->getSuccess()) {
-            throw new \Exception("Upload failed");
+        if (in_array($api, $this->availableApis)) {
+            return call_user_func_array([$this->client, 'api'], [$api]);
         }
 
-        $imageModel = new \Imgur\Api\Model\Image($response->getData());
-        
-        return $imageModel;
+        throw new \Exception("Api `{$api}` doesn't exist.");
     }
 
     /**
@@ -112,10 +76,10 @@ class Imgur {
      */
     public function __call($method, $args)
     {
-        $imageApi = $this->client->api('image');
+        $result = preg_match('^get[A-Z][a-z]+Api$', $method);
 
-        if (in_array($method, ['image'])) {
-            return call_user_func_array([$imageApi, $method], $args);
+        if (!empty($result)) {
+            return $this->getApi($result[1]);
         }
     }
 }
