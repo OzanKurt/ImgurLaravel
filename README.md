@@ -5,7 +5,7 @@ For detailed information about how to use the Imgur client itself please check t
 
 ## Usage
 
-Check the available methods from [ImgurLaravel-API](http://package.imgur-laravel.ozankurt.com/1.0.0/).
+Check the available methods from [ImgurLaravel-API](http://packages.ozankurt.com/imgur-laravel/1.0/).
 
 ### Image Api Example
 ```php
@@ -20,7 +20,6 @@ use Kurt\Imgur\Imgur;
 
 class HomeController extends Controller
 {
-
     /**
      * Imgur instance.
      *

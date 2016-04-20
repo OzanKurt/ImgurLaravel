@@ -9,7 +9,7 @@ use Illuminate\Support\ServiceProvider;
  *
  * @author Ozan Kurt <ozankurt2@gmail.com>
  * @package ozankurt/imgur-laravel
- * @version 1.0.0
+ * @version 1.0.1
  */
 class ImgurServiceProvider extends ServiceProvider
 {
