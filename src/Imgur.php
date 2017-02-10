@@ -2,7 +2,9 @@
 
 namespace Kurt\Imgur;
 
+use Exception;
 use Imgur\Client;
+use Kurt\Imgur\Traits\ImageApiHelperTrait;
 use Kurt\Imgur\Exceptions\NonexistentApiException;
 
 /**
@@ -10,10 +12,10 @@ use Kurt\Imgur\Exceptions\NonexistentApiException;
  *
  * @author Ozan Kurt <ozankurt2@gmail.com>
  * @package ozankurt/imgur-laravel
- * @version 1.0.1
+ * @version 5.4.0
  */
-class Imgur {
-
+class Imgur 
+{
     use ImageApiHelperTrait;
 
     /**
@@ -93,6 +95,6 @@ class Imgur {
             return $this->getApi($result[1]);
         }
 
-        throw new \Exception("Nonexistent method `{$method}` called.");
+        throw new Exception("Nonexistent method `{$method}` called.");
     }
 }

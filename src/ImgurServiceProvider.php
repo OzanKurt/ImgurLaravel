@@ -4,12 +4,14 @@ namespace Kurt\Imgur;
 
 use Illuminate\Support\ServiceProvider;
 
+use Kurt\Imgur\Exceptions\InvalidAuthCredentialsException;
+
 /**
- * Service provider for Laravel 5 integration.
+ * Service provider for Laravel integration.
  *
  * @author Ozan Kurt <ozankurt2@gmail.com>
  * @package ozankurt/imgur-laravel
- * @version 1.0.1
+ * @version 5.4.0
  */
 class ImgurServiceProvider extends ServiceProvider
 {
@@ -33,10 +35,14 @@ class ImgurServiceProvider extends ServiceProvider
         $config = $this->app->config;
 
         $this->app->singleton(Imgur::class, function() use ($config) {
-            return new Imgur([
-                $config->get('services.imgur.client_id'), 
-                $config->get('services.imgur.client_secret'),
-            ]);
+            $client_id = $this->app->config->get('services.imgur.client_id');
+            $client_secret = $this->app->config->get('services.imgur.client_secret');
+            
+            if (is_null($client_id) || is_null($client_secret)) {
+                throw new InvalidAuthCredentialsException;
+            }
+
+            return new Imgur($client_id, $client_secret);
         });
     }
 }

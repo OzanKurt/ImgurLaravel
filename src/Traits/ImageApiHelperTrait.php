@@ -1,6 +1,6 @@
 <?php 
 
-namespace Kurt\Imgur;
+namespace Kurt\Imgur\Traits;
 
 use Imgur\Api\Model\Image;
 use Illuminate\Http\UploadedFile;
@@ -12,9 +12,10 @@ use Kurt\Imgur\Exceptions\UploadFailedException;
  *
  * @author Ozan Kurt <ozankurt2@gmail.com>
  * @package ozankurt/imgur-laravel
- * @version 1.0.1
+ * @version 5.4.0
  */
-trait ImageApiHelperTrait {
+trait ImageApiHelperTrait 
+{
 
     /**
      * Upload an image by using the file from request.

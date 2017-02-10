@@ -2,15 +2,17 @@
 
 namespace Kurt\Imgur\Exceptions;
 
+use Exception;
+
 /**
  * Custom exception for more information.
  *
  * @author Ozan Kurt <ozankurt2@gmail.com>
  * @package ozankurt/imgur-laravel
- * @version 1.0.1
+ * @version 5.4.0
  */
-class NonexistentApiException extends \Exception {
-
+class NonexistentApiException extends Exception
+{
     /**
      * NonexistentApiException constructor.
      * 
@@ -20,5 +22,4 @@ class NonexistentApiException extends \Exception {
     {
         $this->message = "The `{$apiName}` api does not exist.";
     }
-
 }
