@@ -1,11 +1,11 @@
 # ImgurLaravel
 
-A Laravel 5 package to simplify [Imgur Api Client](https://github.com/Adyg/php-imgur-api-client).
+A Laravel 5.4 package to simplify [Imgur Api Client](https://github.com/Adyg/php-imgur-api-client).
 For detailed information about how to use the Imgur client itself please check the [documentation of Imgur Api Client](https://github.com/Adyg/php-imgur-api-client/tree/master/doc).
 
 ## Usage
 
-Check the available methods from [ImgurLaravel-API](http://packages.ozankurt.com/imgur-laravel/1.0/).
+Check the available methods from [ImgurLaravel-API](http://packages.ozankurt.com/imgur-laravel/5.4/).
 
 ### Image Api Example
 ```php
@@ -42,7 +42,7 @@ class HomeController extends Controller
         $imageApi = $this->imgur->getImageApi();
 
         $imageModel = $imageApi->image(
-            $imageModel->input('id')
+            $request->input('id')
         );
 
         return $imageModel;

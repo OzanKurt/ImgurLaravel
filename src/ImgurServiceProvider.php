@@ -32,17 +32,17 @@ class ImgurServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $config = $this->app->config;
+        $client_id = $this->app->config->get('services.imgur.client_id');
+        $client_secret = $this->app->config->get('services.imgur.client_secret');
+        
+        if (is_null($client_id) || is_null($client_secret)) {
+            throw new InvalidAuthCredentialsException;
+        }
 
-        $this->app->singleton(Imgur::class, function() use ($config) {
-            $client_id = $this->app->config->get('services.imgur.client_id');
-            $client_secret = $this->app->config->get('services.imgur.client_secret');
-            
-            if (is_null($client_id) || is_null($client_secret)) {
-                throw new InvalidAuthCredentialsException;
-            }
+        $kurtImgur = new Imgur($client_id, $client_secret);
 
-            return new Imgur($client_id, $client_secret);
-        });
+        $this->app->instance(Imgur::class, $kurtImgur);
+
+        $this->app->instance('kurt.imgur', $kurtImgur);
     }
 }
