@@ -10,7 +10,7 @@
         }
     ],
     "require": {
-        "adyg/php-imgur-api-client": "^2.0",
+        "j0k3r/php-imgur-api-client": "^3.0",
         "intervention/image": "^2.3"
     },
     "autoload": {
