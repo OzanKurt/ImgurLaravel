@@ -100,7 +100,7 @@ IMGUR_CLIENT_SECRET=
 ```
 
 ### Step 4
-Add the service provider to the `config/app.php` file.
+Add the service provider to the `config/app.php` file, this is only needed if you're using an older version of Laravel.
 
 ```php
     'providers' => [

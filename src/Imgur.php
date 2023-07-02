@@ -8,9 +8,6 @@ use Kurt\Imgur\Traits\ImageApiHelperTrait;
 use Kurt\Imgur\Exceptions\NonexistentApiException;
 use Imgur\Api\AbstractApi;
 
-/**
- * Contains the functionality to ease the usage of `\Imgur\Client`.
- */
 class Imgur 
 {
     use ImageApiHelperTrait;
@@ -24,7 +21,19 @@ class Imgur
     /**
      * List of available api's for magic calls.
      */
-    private array $availableApis = ['account', 'image', 'album', 'comment', 'conversation', 'gallery', 'image', 'memegen', 'notification'];
+    private array $availableApis = [
+        'account',
+        'album',
+        'albumOrImage',
+        'comment',
+        'conversation',
+        'customGallery',
+        'gallery',
+        'image',
+        'memegen',
+        'notification',
+        'topic',
+    ];
 
     function __construct(string $client_id, string $client_secret)
     {

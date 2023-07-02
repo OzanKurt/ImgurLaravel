@@ -2,76 +2,31 @@
 
 namespace Kurt\Imgur\Traits;
 
-use Imgur\Api\Model\Image;
 use Illuminate\Http\UploadedFile;
-use Intervention\Image\ImageManager;
-use Kurt\Imgur\Exceptions\UploadFailedException;
 
-/**
- * Contains the functionality to ease the usage of `\Imgur\Api\Image`.
- */
-trait ImageApiHelperTrait 
+trait ImageApiHelperTrait
 {
-
-    /**
-     * Upload an image by using the file from request.
-     * 
-     * @param  \Illuminate\Http\UploadedFile    $uploadedFile   The uploaded file.
-     * @param  array                            $data           Extra data you might want to send imgur.
-     * 
-     * @return \Imgur\Api\Model\Image
-     */
-    public function upload(UploadedFile $uploadedFile, array $data = [])
+    public function upload(UploadedFile $uploadedFile, array $data = []): array
     {
-        $image = app(ImageManager::class)->make($uploadedFile);
-
-        $extension = $uploadedFile->extension();
-
-        $imageEncoded = $image->encode($extension)->getEncoded();
-
-        $response = $this->getImageApi()->upload([
-            'image' => $imageEncoded,
-            'type' => $extension,
+        return $this->getImageApi()->upload([
+            'image' => $uploadedFile->getPathname(),
+            'type' => 'file',
         ] + $data);
-
-        return $this->handleUploadResponse($response);
     }
 
-    /**
-     * Upload an image by using the given URL.
-     * 
-     * @param  string $url      The image url.
-     * @param  array  $data     Extra data you might want to send imgur.
-     * 
-     * @return \Imgur\Api\Model\Image
-     */
-    public function uploadFromUrl($url, array $data = [])
+    public function uploadFromBase64(string $base64, array $data = []): array
     {
-        $response = $this->getImageApi()->upload([
+        return $this->getImageApi()->upload([
+            'image' => $base64,
+            'type' => 'base64',
+        ] + $data);
+    }
+
+    public function uploadFromUrl(string $url, array $data = []): array
+    {
+        return $this->getImageApi()->upload([
             'image' => $url,
             'type' => 'url',
         ] + $data);
-
-        return $this->handleUploadResponse($response);
-    }
-
-    /**
-     * Handles the response from upload.
-     * 
-     * @param  array $response
-     * 
-     * @return \Imgur\Api\Model\Image
-     *
-     * @throws \Kurt\Imgur\Exceptions\UploadFailedException Throws an exception if the upload fails.
-     */
-    private function handleUploadResponse($response)
-    {
-        if (!$response->getSuccess()) {
-            throw new UploadFailedException;
-        }
-
-        $imageModel = new Image($response->getData());
-        
-        return $imageModel;
     }
 }
