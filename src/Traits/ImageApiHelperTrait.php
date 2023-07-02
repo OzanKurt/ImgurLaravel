@@ -8,11 +8,7 @@ use Intervention\Image\ImageManager;
 use Kurt\Imgur\Exceptions\UploadFailedException;
 
 /**
- * Contains the functional to ease the usage of `\Imgur\Api\Image`.
- *
- * @author Ozan Kurt <ozankurt2@gmail.com>
- * @package ozankurt/imgur-laravel
- * @version 5.4.0
+ * Contains the functionality to ease the usage of `\Imgur\Api\Image`.
  */
 trait ImageApiHelperTrait 
 {

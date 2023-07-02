@@ -6,13 +6,10 @@ use Exception;
 use Imgur\Client;
 use Kurt\Imgur\Traits\ImageApiHelperTrait;
 use Kurt\Imgur\Exceptions\NonexistentApiException;
+use Imgur\Api\AbstractApi;
 
 /**
- * Contains the functional to ease the usage of `\Imgur\Client`.
- *
- * @author Ozan Kurt <ozankurt2@gmail.com>
- * @package ozankurt/imgur-laravel
- * @version 5.4.0
+ * Contains the functionality to ease the usage of `\Imgur\Client`.
  */
 class Imgur 
 {
@@ -26,48 +23,26 @@ class Imgur
 
     /**
      * List of available api's for magic calls.
-     * @var string[] Imgur api names.
      */
-    private $availableApis = ['account', 'image', 'album', 'comment', 'conversation', 'gallery', 'image', 'memegen', 'notification'];
+    private array $availableApis = ['account', 'image', 'album', 'comment', 'conversation', 'gallery', 'image', 'memegen', 'notification'];
 
-    /**
-     * Imgur constructor.
-     * 
-     * @param string $client_id     Client id of the imgur application.
-     * @param string $client_secret Client secret of the imgur application.
-     */
-    function __construct($client_id, $client_secret = null)
+    function __construct(string $client_id, string $client_secret)
     {
-        if (is_null($client_secret)) {
-            list($client_id, $client_secret) = $client_id;
-        }
-
         $this->client = new Client();
 
         $this->client->setOption('client_id', $client_id);
         $this->client->setOption('client_secret', $client_secret);
     }
 
-    /**
-     * Imgur client accessor.
-     * 
-     * @return \Imgur\Client
-     */
-    public function getClient()
+    public function getClient(): Client
     {
         return $this->client;
     }
 
     /**
-     * Access an api from the client.
-     * 
-     * @param  string $api Name of the requested api.
-     * 
-     * @return \Imgur\Api\AbstractApi
-     *
-     * @throws \Kurt\Imgur\Exceptions\NonexistentApiException Throws an exception if the requested api does not exist.
+     * @throws \Kurt\Imgur\Exceptions\NonexistentApiException
      */
-    public function getApi($api)
+    public function getApi($api): AbstractApi
     {
         $api = strtolower($api);
 
